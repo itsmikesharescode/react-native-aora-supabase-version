@@ -24,65 +24,65 @@ const SignIn = () => {
           <Text className="text-white text-2xl text-semibold mt-10 font-psemibold">
             Log in to Aora
           </Text>
-        </View>
 
-        <Controller
-          control={control}
-          name="email"
-          render={({ field: { value, onBlur, onChange } }) => (
-            <FormField
-              title="Email"
-              value={value}
-              onBlur={onBlur}
-              handleChangeText={onChange}
-              otherStyles="mt-7"
-              keyboardType="email-address"
-              placeholder="Enter your email"
-            />
+          <Controller
+            control={control}
+            name="email"
+            render={({ field: { value, onBlur, onChange } }) => (
+              <FormField
+                title="Email"
+                value={value}
+                onBlur={onBlur}
+                handleChangeText={onChange}
+                otherStyles="mt-7"
+                keyboardType="email-address"
+                placeholder="Enter your email"
+              />
+            )}
+          />
+
+          {errors.email && (
+            <Text className="text-sm font-pregular text-red-500 mt-[10px]">
+              {errors.email.message}
+            </Text>
           )}
-        />
 
-        {errors.email && (
-          <Text className="text-sm font-pregular text-red-500 mt-[10px]">
-            {errors.email.message}
-          </Text>
-        )}
+          <Controller
+            control={control}
+            name="password"
+            render={({ field: { value, onBlur, onChange } }) => (
+              <FormField
+                title="Password"
+                value={value}
+                onBlur={onBlur}
+                handleChangeText={onChange}
+                otherStyles="mt-7"
+                placeholder="Enter your password"
+                secureTextEntry={true}
+              />
+            )}
+          />
 
-        <Controller
-          control={control}
-          name="password"
-          render={({ field: { value, onBlur, onChange } }) => (
-            <FormField
-              title="Password"
-              value={value}
-              onBlur={onBlur}
-              handleChangeText={onChange}
-              otherStyles="mt-7"
-              placeholder="Enter your password"
-              secureTextEntry={true}
-            />
+          {errors.password && (
+            <Text className="text-sm font-pregular text-red-500 mt-[10px]">
+              {errors.password.message}
+            </Text>
           )}
-        />
 
-        {errors.password && (
-          <Text className="text-sm font-pregular text-red-500 mt-[10px]">
-            {errors.password.message}
-          </Text>
-        )}
+          <CustomButton
+            title="Sign In"
+            handPress={handleSubmit((v) => console.log(v))}
+            containerStyle="mt-7"
+            isLoading={false}
+            textStyle=""
+          />
 
-        <CustomButton
-          title="Sign In"
-          handPress={handleSubmit((v) => console.log(v))}
-          containerStyle="mt-7"
-          isLoading={false}
-          textStyle=""
-        />
-
-        <View className="justify-center pt-5 flex-row gap-2">
-          <Text className="text-lg text-gray-100 font-pregular">Don't have an account?</Text>
-          <Link href="/sign-up" className="text-lg font-psemibold text-secondary">
-            Sign Up Free
-          </Link>
+          <View className="justify-center pt-5 flex-row gap-2">
+            <Text className="text-lg text-gray-100 font-pregular">Don't have an account?</Text>
+            <Link href="/sign-up" className="text-lg font-psemibold text-secondary">
+              Sign Up Free
+            </Link>
+          </View>
         </View>
       </ScrollView>
     </SafeAreaView>

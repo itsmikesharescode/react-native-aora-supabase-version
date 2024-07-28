@@ -1,9 +1,9 @@
-import { TouchableOpacity, Text, View } from 'react-native';
+import { TouchableOpacity, Text } from 'react-native';
 import type { GestureResponderEvent } from 'react-native';
 
 interface CustomBotton {
   title: string;
-  handPress: (event: GestureResponderEvent) => void;
+  handPress?: (event: GestureResponderEvent) => void;
   containerStyle: string;
   textStyle: string;
   isLoading: boolean;
