@@ -3,19 +3,48 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { useForm, Controller } from 'react-hook-form';
 import CustomButton from '@/components/CustomButton';
 import FormField from '@/components/FormField';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { signUpSchema } from '@/lib/schema';
 import type { SignUpSchema } from '@/lib/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { images } from '../../constants';
+import { useState } from 'react';
+import { supabase } from '@/lib/supabase';
 
 const SignUp = () => {
+  const [errMsg, setErrMsg] = useState('');
+  const [loading, setLoading] = useState(false);
+
   const {
     control,
     handleSubmit,
     formState: { errors },
-    getValues,
   } = useForm<SignUpSchema>({ resolver: zodResolver(signUpSchema) });
+
+  const onSubmit = async (formData: SignUpSchema) => {
+    setErrMsg('');
+    setLoading(true);
+
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.signUp({
+      email: formData.email,
+      password: formData.password,
+      options: {
+        data: {
+          username: formData.username,
+        },
+      },
+    });
+
+    if (error) setErrMsg(error.message);
+    // set global context
+    else if (user) {
+      router.replace('/home');
+    }
+    setLoading(false);
+  };
 
   return (
     <SafeAreaView className="bg-primary h-full ">
@@ -115,17 +144,21 @@ const SignUp = () => {
 
           <CustomButton
             title="Sign Up"
-            handPress={handleSubmit((v) => console.log(v))}
-            isLoading={false}
+            handPress={handleSubmit(onSubmit)}
+            isLoading={loading}
             containerStyle="mt-7"
             textStyle=""
           />
 
-          <View className="justify-center pb-[5vh] pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">Already have an account?</Text>
-            <Link href="/sign-in" className="text-lg font-psemibold text-secondary">
-              Log in here
-            </Link>
+          <View className="justify-center pb-[5vh] pt-5 flex-col gap-2">
+            <View className="flex flex-row gap-2 justify-center">
+              <Text className="text-lg text-gray-100 font-pregular">Already have an account?</Text>
+              <Link href="/sign-in" className="text-lg font-psemibold text-secondary">
+                Log in here
+              </Link>
+            </View>
+
+            <Text className="font-pregular text-sm text-red-500 text-center">{errMsg}</Text>
           </View>
         </View>
       </ScrollView>

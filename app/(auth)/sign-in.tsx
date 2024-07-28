@@ -3,7 +3,7 @@ import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../../constants';
 import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
-import { Link } from 'expo-router';
+import { Link, router } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
 import { signInSchema } from '@/lib/schema';
 import type { SignInSchema } from '@/lib/schema';
@@ -41,7 +41,9 @@ const SignIn = () => {
     });
 
     if (error) setErrMsg(error.message);
-    else if (user) console.log(user);
+    else if (user) {
+      router.replace('/home');
+    }
     setLoading(false);
   };
 
