@@ -1,4 +1,4 @@
-import { Text, View, ScrollView, Image } from 'react-native';
+import { Text, View, ScrollView, Image, AppState } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../../constants';
 import FormField from '@/components/FormField';
@@ -8,6 +8,15 @@ import { useForm, Controller } from 'react-hook-form';
 import { signInSchema } from '@/lib/schema';
 import type { SignInSchema } from '@/lib/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { supabase } from '@/lib/supabase';
+
+AppState.addEventListener('change', (state) => {
+  if (state === 'active') {
+    supabase.auth.startAutoRefresh();
+  } else {
+    supabase.auth.stopAutoRefresh();
+  }
+});
 
 const SignIn = () => {
   const {
@@ -15,6 +24,10 @@ const SignIn = () => {
     handleSubmit,
     formState: { errors },
   } = useForm<SignInSchema>({ resolver: zodResolver(signInSchema) });
+
+  const onSubmit = async (formData: SignInSchema) => {
+    console.log(formData);
+  };
 
   return (
     <SafeAreaView className="bg-primary h-full">
@@ -71,7 +84,7 @@ const SignIn = () => {
 
           <CustomButton
             title="Sign In"
-            handPress={handleSubmit((v) => console.log(v))}
+            handPress={handleSubmit(onSubmit)}
             containerStyle="mt-7"
             isLoading={false}
             textStyle=""
