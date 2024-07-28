@@ -5,8 +5,8 @@ import FormField from '@/components/FormField';
 import CustomButton from '@/components/CustomButton';
 import { Link } from 'expo-router';
 import { useForm, Controller } from 'react-hook-form';
-import { signInSchema } from '@/lib/types';
-import type { SignInSchema } from '@/lib/types';
+import { signInSchema } from '@/lib/schema';
+import type { SignInSchema } from '@/lib/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 
 const SignIn = () => {
