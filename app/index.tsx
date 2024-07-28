@@ -33,7 +33,7 @@ const App = () => {
           </Text>
 
           <CustomButton
-            title="Sign In"
+            title="Continue with email"
             handPress={() => router.push('/sign-in')}
             containerStyle="mt-7 w-full"
             isLoading={false}

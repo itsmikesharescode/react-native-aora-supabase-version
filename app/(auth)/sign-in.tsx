@@ -9,6 +9,7 @@ import { signInSchema } from '@/lib/schema';
 import type { SignInSchema } from '@/lib/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { supabase } from '@/lib/supabase';
+import { useState } from 'react';
 
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
@@ -19,6 +20,9 @@ AppState.addEventListener('change', (state) => {
 });
 
 const SignIn = () => {
+  const [loading, setLoading] = useState(false);
+  const [errMsg, setErrMsg] = useState('');
+
   const {
     control,
     handleSubmit,
@@ -26,7 +30,19 @@ const SignIn = () => {
   } = useForm<SignInSchema>({ resolver: zodResolver(signInSchema) });
 
   const onSubmit = async (formData: SignInSchema) => {
-    console.log(formData);
+    setErrMsg('');
+    setLoading(true);
+    const {
+      data: { user },
+      error,
+    } = await supabase.auth.signInWithPassword({
+      email: formData.email,
+      password: formData.password,
+    });
+
+    if (error) setErrMsg(error.message);
+    else if (user) console.log(user);
+    setLoading(false);
   };
 
   return (
@@ -86,15 +102,19 @@ const SignIn = () => {
             title="Sign In"
             handPress={handleSubmit(onSubmit)}
             containerStyle="mt-7"
-            isLoading={false}
+            isLoading={loading}
             textStyle=""
           />
 
-          <View className="justify-center pt-5 flex-row gap-2">
-            <Text className="text-lg text-gray-100 font-pregular">Don't have an account?</Text>
-            <Link href="/sign-up" className="text-lg font-psemibold text-secondary">
-              Sign Up Free
-            </Link>
+          <View className="justify-center pt-5 gap-2 flex-col">
+            <View className="justify-center flex-row gap-2">
+              <Text className="text-lg text-gray-100 font-pregular">Don't have an account?</Text>
+              <Link href="/sign-up" className="text-lg font-psemibold text-secondary">
+                Sign Up Free
+              </Link>
+            </View>
+
+            <Text className="font-pregular text-sm text-red-500 text-center">{errMsg}</Text>
           </View>
         </View>
       </ScrollView>

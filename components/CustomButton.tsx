@@ -22,7 +22,9 @@ const CustomButton: React.FC<CustomBotton> = ({
       onPress={handPress}
       className={`bg-secondary rounded-xl min-h-[62px] justify-center items-center ${containerStyle} ${isLoading ? 'opacity-50' : ''}`}
     >
-      <Text className={`text-primary font-psemibold text-lg ${textStyle}`}>{title}</Text>
+      <Text className={`text-primary font-psemibold text-lg ${textStyle}`}>
+        {isLoading ? 'Please wait...' : title}
+      </Text>
     </TouchableOpacity>
   );
 };
