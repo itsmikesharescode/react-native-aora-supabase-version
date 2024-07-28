@@ -19,8 +19,11 @@
   "dependencies": {
     "@expo/vector-icons": "^14.0.2",
     "@hookform/resolvers": "^3.9.0",
+    "@react-native-async-storage/async-storage": "1.23.1",
     "@react-native-community/eslint-config": "^3.2.0",
     "@react-navigation/native": "^6.0.2",
+    "@rneui/themed": "^4.0.0-rc.8",
+    "@supabase/supabase-js": "^2.44.4",
     "eslint-plugin-prettier": "^5.2.1",
     "expo": "~51.0.22",
     "expo-constants": "~16.0.2",
