@@ -1,50 +1,27 @@
-# Welcome to your Expo app 👋
+# Hello Weirdo 👋! React Native Aora Full Course Tutorial but (Typescript + Validation + Supabase Version)
 
-This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app).
+This is an [Expo](https://expo.dev) project created with [`create-expo-app`](https://www.npmjs.com/package/create-expo-app) + [`nativewind`](https://www.nativewind.dev/quick-starts/expo) + [`typescript`](https://www.nativewind.dev/getting-started/typescript) + [`supabase`](https://supabase.com/) a superset version of [React Native Full Course for Beginners by JS Mastery](https://www.youtube.com/watch?v=ZBCUegTZF7M).
 
-## Get started
+## How to run?
 
-1. Install dependencies
+1. Update dependencies
 
    ```bash
-   npm install
+   npm update or bun update
    ```
 
 2. Start the app
 
    ```bash
-    npx expo start
+    npx expo start -c or bunx expo start -c
    ```
 
-In the output, you'll find options to open the app in a
+## About me
 
-- [development build](https://docs.expo.dev/develop/development-builds/introduction/)
-- [Android emulator](https://docs.expo.dev/workflow/android-studio-emulator/)
-- [iOS simulator](https://docs.expo.dev/workflow/ios-simulator/)
-- [Expo Go](https://expo.dev/go), a limited sandbox for trying out app development with Expo
-
-You can start developing by editing the files inside the **app** directory. This project uses [file-based routing](https://docs.expo.dev/router/introduction).
-
-## Get a fresh project
-
-When you're ready, run:
-
-```bash
-npm run reset-project
-```
-
-This command will move the starter code to the **app-example** directory and create a blank **app** directory where you can start developing.
-
-## Learn more
-
-To learn more about developing your project with Expo, look at the following resources:
-
-- [Expo documentation](https://docs.expo.dev/): Learn fundamentals, or go into advanced topics with our [guides](https://docs.expo.dev/guides).
-- [Learn Expo tutorial](https://docs.expo.dev/tutorial/introduction/): Follow a step-by-step tutorial where you'll create a project that runs on Android, iOS, and the web.
+[Portpolio](https://mike-shares-code.vercel.app/)
 
 ## Join the community
 
-Join our community of developers creating universal apps.
+Join our community of filipino developers creating universal apps.
 
-- [Expo on GitHub](https://github.com/expo/expo): View our open source platform and contribute.
-- [Discord community](https://chat.expo.dev): Chat with Expo users and ask questions.
+- [Filipino Web Development Peers](https://discord.gg/BVYCDRBF): Chat with Expo users and ask questions.
