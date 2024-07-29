@@ -1,10 +1,10 @@
 import { PostgrestError } from '@supabase/supabase-js';
 import { supabase } from './supabase';
-import type { Video } from './types';
+import type { VideoType } from './types';
 
 export const getVideos = async () => {
   const { data, error } = (await supabase.from('videos').select('*')) as {
-    data: Video[];
+    data: VideoType[];
     error: PostgrestError | null;
   };
   if (error) return error;
@@ -17,7 +17,7 @@ export const getLatestVideos = async () => {
     .select('*')
     .limit(7)
     .order('created_at', { ascending: true })) as {
-    data: Video[];
+    data: VideoType[];
     error: PostgrestError | null;
   };
   if (error) return error;

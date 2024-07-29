@@ -8,9 +8,10 @@ import {
   Image,
 } from 'react-native';
 import React, { SetStateAction, useState } from 'react';
-import type { Video } from '@/lib/types';
+import type { VideoType } from '@/lib/types';
 import * as Animatable from 'react-native-animatable';
 import { icons } from '@/constants';
+import { Video, ResizeMode } from 'expo-av';
 
 const zoomIn = {
   0: {
@@ -30,13 +31,27 @@ const zoomOut = {
   },
 };
 
-const TrendingItem: React.FC<{ activeItem: Video; item: Video }> = ({ activeItem, item }) => {
+const TrendingItem: React.FC<{ activeItem: VideoType; item: VideoType }> = ({
+  activeItem,
+  item,
+}) => {
   const [play, setPlay] = useState(false);
 
   return (
     <Animatable.View className="mr-5" animation={activeItem.id === item.id ? zoomIn : zoomOut}>
       {play ? (
-        <Text className="text-white">Playing</Text>
+        <Video
+          source={{ uri: item.video }}
+          className="w-52 h-72 rounded-[35px] mt-3"
+          resizeMode={ResizeMode.CONTAIN}
+          useNativeControls
+          shouldPlay
+          onPlaybackStatusUpdate={(status) => {
+            if (status.didJustFinish) {
+              setPlay(false);
+            }
+          }}
+        ></Video>
       ) : (
         <TouchableOpacity
           className="relative justify-center items-center"
@@ -56,7 +71,7 @@ const TrendingItem: React.FC<{ activeItem: Video; item: Video }> = ({ activeItem
   );
 };
 
-const Trending: React.FC<{ latestVideos: Video[] }> = ({ latestVideos }) => {
+const Trending: React.FC<{ latestVideos: VideoType[] }> = ({ latestVideos }) => {
   const [activeItem, setActiveItem] = useState(latestVideos[1]);
 
   return (
@@ -69,6 +84,7 @@ const Trending: React.FC<{ latestVideos: Video[] }> = ({ latestVideos }) => {
       viewabilityConfig={{
         itemVisiblePercentThreshold: 70,
       }}
+      contentOffset={{ x: 170, y: 0 }}
       data={latestVideos}
       keyExtractor={(item) => String(item.id)}
       renderItem={({ item }) => <TrendingItem activeItem={activeItem} item={item} />}
