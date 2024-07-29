@@ -1,0 +1,56 @@
+import { useState } from 'react';
+import {
+  TouchableOpacity,
+  StyleSheet,
+  Text,
+  TextInput,
+  View,
+  Image,
+  TextInputFocusEventData,
+  NativeSyntheticEvent,
+  KeyboardTypeOptions,
+} from 'react-native';
+
+import { icons } from '../constants';
+
+interface SearchInput {
+  value: string;
+  placeholder: string;
+  handleChangeText: ((text: string) => void) | undefined;
+  onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
+  otherStyles: string;
+  keyboardType?: KeyboardTypeOptions;
+  secureTextEntry?: boolean;
+}
+
+const SearchInput: React.FC<SearchInput> = ({
+  value,
+  placeholder,
+  handleChangeText,
+  otherStyles,
+  onBlur,
+  keyboardType,
+  secureTextEntry,
+}) => {
+  const [showPwd, setShowPwd] = useState(true);
+  return (
+    <View className="w-full space-x-4 flex-row h-16 px-4 bg-black-100 border-2 border-black-200 rounded-2xl focus:border-secondary items-center">
+      <TextInput
+        keyboardType={keyboardType}
+        onBlur={onBlur}
+        className="text-base mt-0.5 text-white flex-1 font-pregular"
+        value={value}
+        placeholder={placeholder}
+        placeholderTextColor="#7b7b8b"
+        onChangeText={handleChangeText}
+        secureTextEntry={secureTextEntry && showPwd}
+      />
+
+      <TouchableOpacity>
+        <Image source={icons.search} className="w-5 h-5" resizeMode="contain" />
+      </TouchableOpacity>
+    </View>
+  );
+};
+
+export default SearchInput;
