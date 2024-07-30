@@ -23,3 +23,9 @@ export const getLatestVideos = async () => {
   if (error) return error;
   return data;
 };
+
+export const searchVideos = async (searchValue: string) => {
+  const { data, error } = await supabase.from('videos').select().ilike('title', `%${searchValue}%`);
+  if (error) return error;
+  return data;
+};

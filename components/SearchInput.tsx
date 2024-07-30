@@ -1,14 +1,11 @@
 import { useState } from 'react';
 import {
   TouchableOpacity,
-  StyleSheet,
-  Text,
   TextInput,
   View,
   Image,
   TextInputFocusEventData,
   NativeSyntheticEvent,
-  KeyboardTypeOptions,
   Alert,
 } from 'react-native';
 
@@ -16,30 +13,19 @@ import { icons } from '../constants';
 import { router, usePathname } from 'expo-router';
 
 interface SearchInput {
-  value: string;
   placeholder: string;
   handleChangeText?: ((text: string) => void) | undefined;
   onBlur?: (e: NativeSyntheticEvent<TextInputFocusEventData>) => void;
-  otherStyles: string;
-  keyboardType?: KeyboardTypeOptions;
-  secureTextEntry?: boolean;
+  initialQuery: string;
 }
 
-const SearchInput: React.FC<SearchInput> = ({
-  value,
-  placeholder,
-  handleChangeText,
-  otherStyles,
-  onBlur,
-  keyboardType,
-}) => {
+const SearchInput: React.FC<SearchInput> = ({ initialQuery, placeholder, onBlur }) => {
   const pathName = usePathname();
-  const [query, setQuery] = useState('');
+  const [query, setQuery] = useState(initialQuery || '');
 
   return (
     <View className="w-full space-x-4 flex-row h-16 px-4 bg-black-100 border-2 border-black-200 rounded-2xl focus:border-secondary items-center">
       <TextInput
-        keyboardType={keyboardType}
         onBlur={onBlur}
         className="text-base mt-0.5 text-white flex-1 font-pregular"
         value={query}
