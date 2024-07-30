@@ -29,3 +29,14 @@ export const searchVideos = async (searchValue: string) => {
   if (error) return error;
   return data;
 };
+
+export const getPersonalVideos = async (userId: string | undefined) => {
+  const { data, error } = await supabase.from('videos').select().eq('user_id', userId);
+  if (error) return error;
+  return data;
+};
+
+export const signOut = async () => {
+  const { error } = await supabase.auth.signOut();
+  if (error) return error;
+};

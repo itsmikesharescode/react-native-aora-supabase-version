@@ -8,8 +8,11 @@ import { useState } from 'react';
 import { useRenderDB } from '@/lib/custom_hooks';
 import { getLatestVideos, getVideos } from '@/lib/business_logic';
 import VideoCard from '@/components/VideoCard';
+import { useAuth } from '@/context/AuthProvider';
 
 const Home = () => {
+  const auth = useAuth();
+
   const [refreshing, setRefreshing] = useState(false);
 
   const { data: videos, isLoading, refetch } = useRenderDB(getVideos);
@@ -17,7 +20,6 @@ const Home = () => {
 
   const onRefresh = async () => {
     setRefreshing(true);
-
     await refetch();
     setRefreshing(false);
   };
@@ -32,8 +34,10 @@ const Home = () => {
           <View className="my-6 px-4 space-y-6">
             <View className="justify-between flex-row mb-6 items-start">
               <View>
-                <Text className="font-pmedium text-sm text-gray-100">Welcome Back</Text>
-                <Text className="font-pmedium text-2xl text-white">Mikey</Text>
+                <Text className="font-pmedium text-sm text-gray-100">Welcome Back,</Text>
+                <Text className="font-pmedium text-2xl text-white">
+                  {auth.user?.user_metadata.username}
+                </Text>
               </View>
 
               <View className="mt-1.5">
@@ -41,7 +45,7 @@ const Home = () => {
               </View>
             </View>
 
-            <SearchInput value="" placeholder="Search for a video topic" otherStyles="" />
+            <SearchInput initialQuery="" placeholder="Search for a video topic" />
 
             <View className="w-full flex-1 pt-5 pb-8">
               <Text className="text-gray-100 text-lg font-pregular mb-3 ">Latest Videos</Text>

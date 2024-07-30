@@ -10,6 +10,7 @@ import type { SignInSchema } from '@/lib/schema';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { supabase } from '@/lib/supabase';
 import { useState } from 'react';
+import { useAuth } from '@/context/AuthProvider';
 
 AppState.addEventListener('change', (state) => {
   if (state === 'active') {
@@ -20,6 +21,7 @@ AppState.addEventListener('change', (state) => {
 });
 
 const SignIn = () => {
+  const auth = useAuth();
   const [loading, setLoading] = useState(false);
   const [errMsg, setErrMsg] = useState('');
 
@@ -42,6 +44,7 @@ const SignIn = () => {
 
     if (error) setErrMsg(error.message);
     else if (user) {
+      auth.setUser(user);
       router.replace('/home');
     }
     setLoading(false);

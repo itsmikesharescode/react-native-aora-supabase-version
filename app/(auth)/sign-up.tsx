@@ -10,8 +10,11 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { images } from '../../constants';
 import { useState } from 'react';
 import { supabase } from '@/lib/supabase';
+import { useAuth } from '@/context/AuthProvider';
 
 const SignUp = () => {
+  const auth = useAuth();
+
   const [errMsg, setErrMsg] = useState('');
   const [loading, setLoading] = useState(false);
 
@@ -39,8 +42,8 @@ const SignUp = () => {
     });
 
     if (error) setErrMsg(error.message);
-    // set global context
     else if (user) {
+      auth.setUser(user);
       router.replace('/home');
     }
     setLoading(false);

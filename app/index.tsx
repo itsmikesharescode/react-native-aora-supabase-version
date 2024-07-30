@@ -4,18 +4,15 @@ import { Redirect, router } from 'expo-router';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../constants';
 import CustomButton from '@/components/CustomButton';
-import { useGlobalContext } from '@/context/GlobalProvider';
+import { useAuth } from '@/context/AuthProvider';
 
 const App = () => {
-  const userContext = useGlobalContext();
+  const auth = useAuth();
 
-  if (!userContext) {
-    throw new Error('useGlobalContext must be used within a GlobalProvider');
+  if (!auth) {
+    throw new Error('Auth context must be used within a global provider');
   }
-
-  const { isLoading, isLoggedIn } = userContext;
-
-  if (!isLoading && isLoggedIn) return <Redirect href="/home" />;
+  if (auth.user) return <Redirect href="/home" />;
 
   return (
     <SafeAreaView className="bg-primary h-full">

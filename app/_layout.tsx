@@ -2,7 +2,7 @@ import { Text, View } from 'react-native';
 import React, { useEffect } from 'react';
 import { Stack, SplashScreen } from 'expo-router';
 import { useFonts } from 'expo-font';
-import { GlobalProvider } from '@/context/GlobalProvider';
+import { AuthProvider } from '@/context/AuthProvider';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -32,7 +32,7 @@ const RootLayout = () => {
   if (!fontsLoaded && !error) return null;
 
   return (
-    <GlobalProvider>
+    <AuthProvider>
       <Stack>
         <Stack.Screen name="index" options={{ headerShown: false }} />
         <Stack.Screen name="(auth)" options={{ headerShown: false }} />
@@ -40,7 +40,7 @@ const RootLayout = () => {
 
         <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
       </Stack>
-    </GlobalProvider>
+    </AuthProvider>
   );
 };
 
