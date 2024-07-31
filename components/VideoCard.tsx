@@ -1,18 +1,21 @@
-import { Image, StyleSheet, Text, TouchableOpacity, View } from 'react-native';
+import { Image, Text, TouchableOpacity, View, Modal, Alert } from 'react-native';
 import React, { useState } from 'react';
 import type { VideoType } from '@/lib/types';
 import { icons } from '@/constants';
 import { Video, ResizeMode } from 'expo-av';
 import { useAuth } from '@/context/AuthProvider';
+import CustomButton from './CustomButton';
 
 const VideoCard: React.FC<VideoType> = (params) => {
   const auth = useAuth();
+
+  const [showMenu, setShowMenu] = useState(false);
   const [play, setPlay] = useState(false);
 
   return (
     <View className="flex-col items-center px-4 mb-14">
       <View className="flex-row gap-3 items-start">
-        <View className="justify-center flex-row flex-1">
+        <View className="justify-center flex-row flex-1 relative">
           <View className="w-[46px] rounded-lg border-secondary border h-[46px] p-0.5">
             <Image
               source={{ uri: params.thumbnail }}
@@ -30,9 +33,40 @@ const VideoCard: React.FC<VideoType> = (params) => {
               {auth.user?.user_metadata.username}
             </Text>
           </View>
-          <View className="pt-2">
-            <Image source={icons.menu} className="w-5 h-5 " resizeMode="contain" />
-          </View>
+
+          <TouchableOpacity onPress={() => setShowMenu(true)}>
+            <View className="flex items-center justify-center p-[10px]">
+              <Image source={icons.menu} className="w-5 h-5 " resizeMode="contain" />
+            </View>
+          </TouchableOpacity>
+
+          {showMenu && (
+            <Modal
+              transparent={true}
+              animationType="fade"
+              visible={showMenu}
+              onRequestClose={() => setShowMenu(false)}
+            >
+              <TouchableOpacity
+                onPress={() => setShowMenu(false)}
+                className="bg-[#0000007c] w-full h-full -z-10 flex items-center justify-end"
+              >
+                <View className="w-[100%] p-[10px] bg-black-100 z-10">
+                  <CustomButton title="Save to Bookmark" containerStyle="w-full" />
+                  <CustomButton
+                    title="Delete"
+                    containerStyle="w-full mt-[10px]"
+                    handPress={() =>
+                      Alert.alert('Cannot be undone', 'Are you sure?', [
+                        { text: 'Cancel', style: 'cancel' },
+                        { text: 'Ok', style: 'destructive', isPreferred: true },
+                      ])
+                    }
+                  />
+                </View>
+              </TouchableOpacity>
+            </Modal>
+          )}
         </View>
       </View>
 
@@ -48,7 +82,7 @@ const VideoCard: React.FC<VideoType> = (params) => {
               setPlay(false);
             }
           }}
-        ></Video>
+        />
       ) : (
         <TouchableOpacity
           activeOpacity={0.7}

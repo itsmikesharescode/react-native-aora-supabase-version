@@ -1,4 +1,4 @@
-import { Text, View, FlatList, Image, RefreshControl, Alert } from 'react-native';
+import { Text, View, FlatList, Image, RefreshControl } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 import { images } from '../../constants';
 import SearchInput from '@/components/SearchInput';
@@ -6,21 +6,24 @@ import Trending from '@/components/Trending';
 import EmptyState from '@/components/EmptyState';
 import { useState } from 'react';
 import { useRenderDB } from '@/lib/custom_hooks';
-import { getLatestVideos, getVideos } from '@/lib/business_logic';
 import VideoCard from '@/components/VideoCard';
 import { useAuth } from '@/context/AuthProvider';
+
+import getVideos from '@/lib/backend_calls/getVideos';
+import getLatestVideos from '@/lib/backend_calls/getLatestVideos';
 
 const Home = () => {
   const auth = useAuth();
 
   const [refreshing, setRefreshing] = useState(false);
 
-  const { data: videos, isLoading, refetch } = useRenderDB(getVideos);
-  const { data: latestVideos } = useRenderDB(getLatestVideos);
+  const { data: videos, refetch } = useRenderDB(getVideos);
+  const { data: latestVideos, refetch: latestRefetch } = useRenderDB(getLatestVideos);
 
   const onRefresh = async () => {
     setRefreshing(true);
     await refetch();
+    await latestRefetch();
     setRefreshing(false);
   };
 

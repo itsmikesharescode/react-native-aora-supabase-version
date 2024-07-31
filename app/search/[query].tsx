@@ -4,15 +4,15 @@ import SearchInput from '@/components/SearchInput';
 import EmptyState from '@/components/EmptyState';
 import { useEffect, useState } from 'react';
 import { useRenderDB } from '@/lib/custom_hooks';
-import { searchVideos } from '@/lib/business_logic';
 import VideoCard from '@/components/VideoCard';
 import { useLocalSearchParams } from 'expo-router';
+import getSearchVideos from '@/lib/backend_calls/getSearchVideos';
 
 const Search = () => {
   const { query } = useLocalSearchParams();
 
-  const { data, isLoading, refetch } = useRenderDB(() =>
-    searchVideos(Array.isArray(query) ? query[0] : (query ?? '')),
+  const { data, refetch } = useRenderDB(() =>
+    getSearchVideos(Array.isArray(query) ? query[0] : (query ?? '')),
   );
 
   useEffect(() => {

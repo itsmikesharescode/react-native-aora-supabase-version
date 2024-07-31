@@ -1,20 +1,20 @@
-import { Text, View, FlatList, TouchableOpacity, Image } from 'react-native';
+import { View, FlatList, TouchableOpacity, Image } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
-import SearchInput from '@/components/SearchInput';
 import EmptyState from '@/components/EmptyState';
-import { useEffect, useState } from 'react';
 import { useRenderDB } from '@/lib/custom_hooks';
-import { getPersonalVideos, signOut } from '@/lib/business_logic';
 import VideoCard from '@/components/VideoCard';
 import { useAuth } from '@/context/AuthProvider';
 import { icons } from '@/constants';
 import InfoBox from '@/components/InfoBox';
 import { router } from 'expo-router';
 
+import getPersonalVideos from '@/lib/backend_calls/getPersonalVideos';
+import signOut from '@/lib/backend_calls/signOut';
+
 const Search = () => {
   const auth = useAuth();
 
-  const { data, isLoading, refetch } = useRenderDB(() => getPersonalVideos(auth.user?.id));
+  const { data } = useRenderDB(() => getPersonalVideos(auth.user?.id));
 
   const logout = async () => {
     await signOut();

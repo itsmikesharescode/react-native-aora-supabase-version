@@ -9,9 +9,8 @@ import { icons } from '@/constants';
 import CustomButton from '@/components/CustomButton';
 import { useAuth } from '@/context/AuthProvider';
 import * as ImagePicker from 'expo-image-picker';
-import { supabase } from '@/lib/supabase';
-import { createVideo } from '@/lib/business_logic';
 import { router } from 'expo-router';
+import createVideo from '@/lib/backend_calls/createVideo';
 
 const Create = () => {
   const auth = useAuth();
