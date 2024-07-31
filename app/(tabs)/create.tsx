@@ -31,6 +31,7 @@ const Create = () => {
       const res = await createVideo(formData, auth.user.id);
       if (res?.message) Alert.alert('Upload Error', res.message);
       else router.replace('/home');
+      Alert.alert('Create Video', 'You have successfully posted a video.');
       reset();
     }
   };
