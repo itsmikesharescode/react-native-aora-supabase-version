@@ -3,8 +3,10 @@ import React, { useState } from 'react';
 import type { VideoType } from '@/lib/types';
 import { icons } from '@/constants';
 import { Video, ResizeMode } from 'expo-av';
+import { useAuth } from '@/context/AuthProvider';
 
 const VideoCard: React.FC<VideoType> = (params) => {
+  const auth = useAuth();
   const [play, setPlay] = useState(false);
 
   return (
@@ -24,7 +26,9 @@ const VideoCard: React.FC<VideoType> = (params) => {
               {params.title}
             </Text>
 
-            <Text className="text-xs text-gray-100 font-pregular">Username here</Text>
+            <Text className="text-xs text-gray-100 font-pregular">
+              {auth.user?.user_metadata.username}
+            </Text>
           </View>
           <View className="pt-2">
             <Image source={icons.menu} className="w-5 h-5 " resizeMode="contain" />

@@ -45,7 +45,12 @@ const Search = () => {
             />
 
             <View className="mt-5 flex-row">
-              <InfoBox title="0" subtitle="Post" containerStyles="mr-10" titleStyles="text-xl" />
+              <InfoBox
+                title={String(data.length)}
+                subtitle="Post"
+                containerStyles="mr-10"
+                titleStyles="text-xl"
+              />
               <InfoBox title="1.2k" subtitle="Followers" titleStyles="text-xl" />
             </View>
           </View>

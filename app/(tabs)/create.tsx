@@ -20,6 +20,7 @@ const Create = () => {
     control,
     handleSubmit,
     setValue,
+    reset,
     formState: { errors, isSubmitting },
   } = useForm<CreateSchema>({ resolver: zodResolver(createSchema) });
 
@@ -30,6 +31,7 @@ const Create = () => {
       const res = await createVideo(formData, auth.user.id);
       if (res?.message) Alert.alert('Upload Error', res.message);
       else router.replace('/home');
+      reset();
     }
   };
 

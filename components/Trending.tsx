@@ -72,7 +72,7 @@ const TrendingItem: React.FC<{ activeItem: VideoType; item: VideoType }> = ({
 };
 
 const Trending: React.FC<{ latestVideos: VideoType[] }> = ({ latestVideos }) => {
-  const [activeItem, setActiveItem] = useState(latestVideos[1]);
+  const [activeItem, setActiveItem] = useState(latestVideos[0]);
 
   return (
     <FlatList
