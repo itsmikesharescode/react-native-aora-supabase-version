@@ -28,28 +28,36 @@ export const signUpSchema = z
 export type SignInSchema = z.infer<typeof signInSchema>;
 export type SignUpSchema = z.infer<typeof signUpSchema>;
 
-const MAX_VIDEO_SIZE = 3 * 1024 * 1024; // 3MB in bytes
-const MAX_IMAGE_SIZE = 600 * 1024; // 600KB in bytes
+// Base schema for a file asset with basic validation
+const fileAssetSchema = z.object({
+  name: z.string().min(1, { message: 'File name is required.' }),
+  type: z.string().min(1, { message: 'File type is required.' }),
+  size: z.number().min(1, { message: 'File size must be greater than 0.' }),
+  uri: z.string().min(1, { message: 'File URI is required.' }),
+  arrayBuffer: z.any().optional(),
+  slice: z.any().optional(),
+  stream: z.any().optional(),
+  text: z.any().optional(),
+});
+
+// Schema for video files with a 6MB size constraint
+const videoFileSchema = fileAssetSchema.refine((data) => data.size <= 6 * 1024 * 1024, {
+  // 3MB
+  message: 'Video file size must be less than or equal to 3MB.',
+});
+
+// Schema for image files with a 700KB size constraint
+const imageFileSchema = fileAssetSchema.refine((data) => data.size <= 700 * 1024, {
+  // 700KB
+  message: 'Image file size must be less than or equal to 700KB.',
+});
 
 export const createSchema = z.object({
   videoTitle: z.string().min(1, { message: 'Must enter video title.' }),
-  uploadVideo: z.object({
-    uri: z.string(),
-    type: z.string().startsWith('video/'),
-    name: z.string(),
-    size: z.number().max(MAX_VIDEO_SIZE, {
-      message: `Video must be ${MAX_VIDEO_SIZE / (1024 * 1024)}MB or less`,
-    }),
-  }),
-  uploadImage: z.object({
-    uri: z.string(),
-    type: z.string().startsWith('image/'),
-    name: z.string(),
-    size: z.number().max(MAX_IMAGE_SIZE, {
-      message: `Image must be ${MAX_IMAGE_SIZE / 1024}KB or less`,
-    }),
-  }),
+  uploadVideo: videoFileSchema,
+  uploadImage: imageFileSchema,
   aiPrompt: z.string().min(1, { message: 'Must enter ai prompt.' }),
 });
 
 export type CreateSchema = z.infer<typeof createSchema>;
+export type FileAssetSchema = z.infer<typeof fileAssetSchema>;

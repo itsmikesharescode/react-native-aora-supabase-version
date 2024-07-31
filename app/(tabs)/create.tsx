@@ -7,42 +7,59 @@ import { CreateSchema, createSchema } from '@/lib/schema';
 import { ResizeMode, Video } from 'expo-av';
 import { icons } from '@/constants';
 import CustomButton from '@/components/CustomButton';
-import * as DocumentPicker from 'expo-document-picker';
-import { useEffect } from 'react';
+import { useAuth } from '@/context/AuthProvider';
+import * as ImagePicker from 'expo-image-picker';
+import { supabase } from '@/lib/supabase';
+import { createVideo } from '@/lib/business_logic';
+import { router } from 'expo-router';
 
 const Create = () => {
+  const auth = useAuth();
+
   const {
     control,
     handleSubmit,
     setValue,
-    formState: { errors },
+    formState: { errors, isSubmitting },
   } = useForm<CreateSchema>({ resolver: zodResolver(createSchema) });
 
   const formValues = useWatch({ control });
 
   const onSubmit = async (formData: CreateSchema) => {
-    console.log(formData);
+    if (auth.user) {
+      const res = await createVideo(formData, auth.user.id);
+      if (res?.message) Alert.alert('Upload Error', res.message);
+      else router.replace('/home');
+    }
   };
 
   const openPicker = async (selectType: 'Video' | 'Image') => {
-    const result = await DocumentPicker.getDocumentAsync({
-      type:
+    let result = await ImagePicker.launchImageLibraryAsync({
+      mediaTypes:
         selectType === 'Image'
-          ? ['image/png', 'image/jpeg', 'image/jpg']
-          : ['video/mp4', 'video/gif'],
+          ? ImagePicker.MediaTypeOptions.Images
+          : ImagePicker.MediaTypeOptions.Videos,
+      allowsEditing: true,
+      aspect: [4, 3],
+      quality: 1,
     });
 
     if (!result.canceled) {
       const file = result.assets[0];
-      const fileInfo = {
-        uri: file.uri,
+
+      const asset = {
+        name: file.fileName ?? '',
         type: file.mimeType ?? '',
-        name: file.name,
-        size: file.size ?? 0,
+        size: file.fileSize ?? 0,
+        uri: file.uri ?? '',
+        arrayBuffer: undefined,
+        slice: undefined,
+        stream: undefined,
+        text: undefined,
       };
 
-      if (selectType === 'Image') setValue('uploadImage', fileInfo);
-      if (selectType === 'Video') setValue('uploadVideo', fileInfo);
+      if (selectType === 'Image') setValue('uploadImage', asset);
+      if (selectType === 'Video') setValue('uploadVideo', asset);
     } else {
       setTimeout(() => {
         Alert.alert('Document Picked', JSON.stringify(result, null, 2));
@@ -101,7 +118,6 @@ const Create = () => {
         {errors.uploadVideo && (
           <Text className="text-sm font-pregular text-red-500 mt-[10px]">
             {errors.uploadVideo.message}
-            {errors.uploadVideo.size?.message}(e) => console.log(e)
           </Text>
         )}
 
@@ -127,7 +143,6 @@ const Create = () => {
         {errors.uploadImage && (
           <Text className="text-sm font-pregular text-red-500 mt-[10px]">
             {errors.uploadImage?.message}
-            {errors.uploadImage?.size?.message}
           </Text>
         )}
 
@@ -157,7 +172,7 @@ const Create = () => {
           handPress={handleSubmit(onSubmit)}
           containerStyle="mt-7 w-full"
           textStyle=""
-          isLoading={false}
+          isLoading={isSubmitting}
         />
       </ScrollView>
     </SafeAreaView>
