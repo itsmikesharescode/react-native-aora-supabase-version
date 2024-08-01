@@ -7,6 +7,7 @@ import { useAuth } from '@/context/AuthProvider';
 import CustomButton from './CustomButton';
 import { useAuthLoad } from '@/context/AuthLoadProvider';
 import bookmarkEvent from '@/lib/backend_calls/bookmarkEvent';
+import { router } from 'expo-router';
 
 const VideoCard: React.FC<VideoType> = (params) => {
   const auth = useAuth();
@@ -22,6 +23,8 @@ const VideoCard: React.FC<VideoType> = (params) => {
     const data = await bookmarkEvent(params.id);
     authLoad.setBookmarks(data);
     setBookmark(false);
+    setShowMenu(false);
+    router.replace('/bookmark');
   };
 
   return (

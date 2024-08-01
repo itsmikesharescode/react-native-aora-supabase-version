@@ -1,7 +1,7 @@
 import VideoCard from '@/components/VideoCard';
 import { useAuthLoad } from '@/context/AuthLoadProvider';
 import { useAuth } from '@/context/AuthProvider';
-import { FlatList, StyleSheet, Text, View } from 'react-native';
+import { FlatList, Text, View } from 'react-native';
 import { SafeAreaView } from 'react-native-safe-area-context';
 
 const BookMark = () => {
