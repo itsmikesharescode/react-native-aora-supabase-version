@@ -11,6 +11,9 @@ interface AuthLoadContextType {
 
   personalVideos: VideoType[] | null;
   setPersonalVideos: (personalVideos: VideoType[] | null) => void;
+
+  bookmarks: VideoType[] | null;
+  setBookmarks: (bookmarks: VideoType[] | null) => void;
 }
 
 const AuthLoadContext = createContext<AuthLoadContextType | undefined>(undefined);
@@ -27,6 +30,7 @@ export const AuthLoadProvider = ({ children }: { children: ReactNode }) => {
   const auth = useAuth();
   const [allVideos, setAllVideos] = useState<VideoType[] | null>(null);
   const [personalVideos, setPersonalVideos] = useState<VideoType[] | null>(null);
+  const [bookmarks, setBookmarks] = useState<VideoType[] | null>(null);
 
   useEffect(() => {
     const getAuthLoad = async () => {
@@ -36,9 +40,9 @@ export const AuthLoadProvider = ({ children }: { children: ReactNode }) => {
 
       if (error) Alert.alert('Auth Load Error', error.message);
       if (data) {
-        console.log(data);
         setAllVideos(data.allvideos);
         setPersonalVideos(data.personal_videos);
+        setBookmarks(data.bookmarks);
       }
     };
 
@@ -46,6 +50,8 @@ export const AuthLoadProvider = ({ children }: { children: ReactNode }) => {
   }, [auth.user]);
 
   const value = {
+    bookmarks,
+    setBookmarks,
     allVideos,
     setAllVideos,
     personalVideos,

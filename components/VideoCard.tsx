@@ -5,12 +5,20 @@ import { icons } from '@/constants';
 import { Video, ResizeMode } from 'expo-av';
 import { useAuth } from '@/context/AuthProvider';
 import CustomButton from './CustomButton';
+import { useAuthLoad } from '@/context/AuthLoadProvider';
+import bookmarkEvent from '@/lib/backend_calls/bookmarkEvent';
 
 const VideoCard: React.FC<VideoType> = (params) => {
   const auth = useAuth();
+  const authLoad = useAuthLoad();
 
   const [showMenu, setShowMenu] = useState(false);
   const [play, setPlay] = useState(false);
+
+  const bookmarkEventHandler = async () => {
+    const data = await bookmarkEvent(params.id);
+    authLoad.setBookmarks(data);
+  };
 
   return (
     <View className="flex-col items-center px-4 mb-14">
@@ -52,8 +60,23 @@ const VideoCard: React.FC<VideoType> = (params) => {
                 className="bg-[#0000007c] w-full h-full -z-10 flex items-center justify-end"
               >
                 <View className="w-[100%] p-[10px] bg-black-100 z-10">
-                  <CustomButton title="Save to Bookmark" containerStyle="w-full" />
+                  {authLoad.bookmarks?.find((item) => item.id === params.id) ? (
+                    <CustomButton
+                      isLoading={false}
+                      title="Unsave"
+                      containerStyle="w-full"
+                      handPress={bookmarkEventHandler}
+                    />
+                  ) : (
+                    <CustomButton
+                      isLoading={false}
+                      title="Save to Bookmark"
+                      containerStyle="w-full"
+                      handPress={bookmarkEventHandler}
+                    />
+                  )}
                   <CustomButton
+                    isLoading={false}
                     title="Delete"
                     containerStyle="w-full mt-[10px]"
                     handPress={() =>

@@ -18,5 +18,5 @@ export type BookmarkType = {
 export interface AuthLoadType {
   allvideos: VideoType[];
   personal_videos: VideoType[];
-  bookmarks: unknown;
+  bookmarks: VideoType[];
 }
