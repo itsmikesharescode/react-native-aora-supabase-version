@@ -15,9 +15,13 @@ const VideoCard: React.FC<VideoType> = (params) => {
   const [showMenu, setShowMenu] = useState(false);
   const [play, setPlay] = useState(false);
 
+  const [bookmark, setBookmark] = useState(false);
+
   const bookmarkEventHandler = async () => {
+    setBookmark(true);
     const data = await bookmarkEvent(params.id);
     authLoad.setBookmarks(data);
+    setBookmark(false);
   };
 
   return (
@@ -62,14 +66,14 @@ const VideoCard: React.FC<VideoType> = (params) => {
                 <View className="w-[100%] p-[10px] bg-black-100 z-10">
                   {authLoad.bookmarks?.find((item) => item.id === params.id) ? (
                     <CustomButton
-                      isLoading={false}
+                      isLoading={bookmark}
                       title="Unsave"
                       containerStyle="w-full"
                       handPress={bookmarkEventHandler}
                     />
                   ) : (
                     <CustomButton
-                      isLoading={false}
+                      isLoading={bookmark}
                       title="Save to Bookmark"
                       containerStyle="w-full"
                       handPress={bookmarkEventHandler}
