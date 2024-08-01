@@ -10,27 +10,28 @@ import VideoCard from '@/components/VideoCard';
 import { useAuth } from '@/context/AuthProvider';
 
 import getVideos from '@/lib/backend_calls/getVideos';
-import getLatestVideos from '@/lib/backend_calls/getLatestVideos';
+import { useAuthLoad } from '@/context/AuthLoadProvider';
 
 const Home = () => {
   const auth = useAuth();
+  const authLoad = useAuthLoad();
 
   const [refreshing, setRefreshing] = useState(false);
 
   const { data: videos, refetch } = useRenderDB(getVideos);
-  const { data: latestVideos, refetch: latestRefetch } = useRenderDB(getLatestVideos);
 
   const onRefresh = async () => {
     setRefreshing(true);
     await refetch();
-    await latestRefetch();
+
+    authLoad.setAllVideos(videos);
     setRefreshing(false);
   };
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={videos}
+        data={authLoad.allVideos}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => <VideoCard {...item} />}
         ListHeaderComponent={() => (
@@ -52,7 +53,13 @@ const Home = () => {
 
             <View className="w-full flex-1 pt-5 pb-8">
               <Text className="text-gray-100 text-lg font-pregular mb-3 ">Latest Videos</Text>
-              <Trending latestVideos={latestVideos} />
+              {authLoad.allVideos ? (
+                <Trending latestVideos={authLoad.allVideos} />
+              ) : (
+                <>
+                  <Text>asdasd</Text>
+                </>
+              )}
             </View>
           </View>
         )}

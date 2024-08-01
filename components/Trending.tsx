@@ -1,13 +1,5 @@
-import {
-  FlatList,
-  ImageBackground,
-  StyleSheet,
-  Text,
-  TouchableOpacity,
-  View,
-  Image,
-} from 'react-native';
-import React, { SetStateAction, useState } from 'react';
+import { FlatList, ImageBackground, TouchableOpacity, Image } from 'react-native';
+import React, { useState } from 'react';
 import type { VideoType } from '@/lib/types';
 import * as Animatable from 'react-native-animatable';
 import { icons } from '@/constants';
@@ -94,5 +86,3 @@ const Trending: React.FC<{ latestVideos: VideoType[] }> = ({ latestVideos }) => 
 };
 
 export default Trending;
-
-const styles = StyleSheet.create({});

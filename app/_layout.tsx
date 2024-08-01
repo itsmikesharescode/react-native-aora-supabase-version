@@ -1,8 +1,8 @@
-import { Text, View } from 'react-native';
 import React, { useEffect } from 'react';
 import { Stack, SplashScreen } from 'expo-router';
 import { useFonts } from 'expo-font';
 import { AuthProvider } from '@/context/AuthProvider';
+import { AuthLoadProvider } from '@/context/AuthLoadProvider';
 
 SplashScreen.preventAutoHideAsync();
 
@@ -33,13 +33,15 @@ const RootLayout = () => {
 
   return (
     <AuthProvider>
-      <Stack>
-        <Stack.Screen name="index" options={{ headerShown: false }} />
-        <Stack.Screen name="(auth)" options={{ headerShown: false }} />
-        <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
+      <AuthLoadProvider>
+        <Stack>
+          <Stack.Screen name="index" options={{ headerShown: false }} />
+          <Stack.Screen name="(auth)" options={{ headerShown: false }} />
+          <Stack.Screen name="(tabs)" options={{ headerShown: false }} />
 
-        <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
-      </Stack>
+          <Stack.Screen name="search/[query]" options={{ headerShown: false }} />
+        </Stack>
+      </AuthLoadProvider>
     </AuthProvider>
   );
 };

@@ -10,22 +10,26 @@ import { router } from 'expo-router';
 
 import getPersonalVideos from '@/lib/backend_calls/getPersonalVideos';
 import signOut from '@/lib/backend_calls/signOut';
+import { useAuthLoad } from '@/context/AuthLoadProvider';
 
 const Search = () => {
   const auth = useAuth();
+  const authLoad = useAuthLoad();
 
   const { data } = useRenderDB(() => getPersonalVideos(auth.user?.id));
 
   const logout = async () => {
     await signOut();
     auth.setUser(null);
+    authLoad.setAllVideos(null);
+    authLoad.setPersonalVideos(null);
     router.replace('/');
   };
 
   return (
     <SafeAreaView className="bg-primary h-full">
       <FlatList
-        data={data}
+        data={authLoad.personalVideos}
         keyExtractor={(item) => String(item.id)}
         renderItem={({ item }) => <VideoCard {...item} />}
         ListHeaderComponent={() => (
